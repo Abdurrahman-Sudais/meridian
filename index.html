@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0b0c" />
+<title>MERIDIAN — Vintage Watches &amp; Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<!-- Preloader -->
+<div class="loader" id="loader"><div class="loader-word">MERIDIAN</div><div class="loader-bar"><span id="loaderBar"></span></div></div>
+<div class="cursor" id="cursor"></div><div class="cursor-dot" id="cursorDot"></div>
+<div class="progress" id="scrollProgress"></div>
+
+<div class="announce"><div class="announce-track">
+  <span>Every piece authenticated</span><span>✦</span><span>Insured worldwide shipping</span><span>✦</span><span>24-month warranty</span><span>✦</span><span>14-day returns</span><span>✦</span>
+  <span>Every piece authenticated</span><span>✦</span><span>Insured worldwide shipping</span><span>✦</span><span>24-month warranty</span><span>✦</span><span>14-day returns</span><span>✦</span>
+</div></div>
+
+<header class="nav" id="nav">
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+  <nav class="nav-links" id="navLinks"></nav>
+  <a href="#" class="logo">MERIDIAN</a>
+  <div class="nav-actions">
+    <button class="icon-btn" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    <button class="icon-btn" id="wishBtn" aria-label="Wishlist"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg><b class="badge" id="wishCount">0</b></button>
+    <button class="icon-btn" id="cartBtn" aria-label="Cart"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 13h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><b class="badge" id="cartCount">0</b></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+</div>
+
+<main>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-content">
+      <p class="eyebrow reveal" data-t="eyebrow"></p>
+      <h1 class="hero-title split" data-t="heroTitle"></h1>
+      <p class="hero-sub reveal" data-t="heroSub"></p>
+      <div class="hero-cta reveal">
+        <a href="#shop" class="btn btn-primary magnetic"><span>Shop the collection</span></a>
+        <a href="#lookbook" class="btn btn-ghost magnetic"><span>View lookbook</span></a>
+      </div>
+    </div>
+    <div class="hero-scroll"><span>Scroll</span><i></i></div>
+  </section>
+
+  <!-- Marquee -->
+  <section class="marquee"><div class="marquee-track" id="marquee"></div></section>
+
+  <!-- Categories -->
+  <section class="cats container">
+    <div class="section-head"><h2 class="split">Shop by category</h2><p class="reveal" data-t="catSub"></p></div>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <!-- Shop -->
+  <section class="shop container" id="shop">
+    <div class="section-head"><h2 class="split">The collection</h2><p class="reveal"><span id="resultCount">0</span> <span data-t="unit"></span></p></div>
+    <div class="toolbar reveal">
+      <div class="chips" id="chips"></div>
+      <div class="toolbar-right">
+        <label class="price-filter">Max $<output id="priceOut">600</output><input type="range" id="priceRange" min="40" max="600" step="10" value="600" /></label>
+        <select id="sortSel">
+          <option value="featured">Featured</option><option value="new">Newest</option>
+          <option value="low">Price: low → high</option><option value="high">Price: high → low</option><option value="rating">Top rated</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>No pieces match those filters.</p>
+  </section>
+
+  <!-- Drop countdown -->
+  <section class="drop" id="lookbook">
+    <div class="drop-media parallax" id="dropMedia" data-speed="0.15"></div>
+    <div class="drop-inner container">
+      <p class="eyebrow reveal">Next drop</p>
+      <h2 class="split" data-t="dropName"></h2>
+      <p class="reveal" data-t="dropSub"></p>
+      <div class="countdown reveal" id="countdown">
+        <div><b data-u="d">00</b><span>Days</span></div><div><b data-u="h">00</b><span>Hours</span></div>
+        <div><b data-u="m">00</b><span>Min</span></div><div><b data-u="s">00</b><span>Sec</span></div>
+      </div>
+      <form class="notify reveal" id="notifyForm"><input type="email" required placeholder="Email for early access" /><button class="btn btn-primary">Notify me</button></form>
+    </div>
+  </section>
+
+  <!-- Horizontal lookbook -->
+  <section class="hscroll" id="hscroll">
+    <div class="hscroll-sticky">
+      <h2 class="hscroll-title">From the <em>archive</em></h2>
+      <div class="hscroll-track" id="hTrack"></div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values container">
+    <div class="value reveal"><b class="counter" data-to="64">0</b><span>years in the trade</span></div>
+    <div class="value reveal"><b class="counter" data-to="40">0</b><span>point authentication check</span></div>
+    <div class="value reveal"><b class="counter" data-to="24">0</b><span>month warranty on every piece</span></div>
+    <div class="value reveal"><b class="counter" data-to="4.9" data-dec="1">0</b><span>average collector rating</span></div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="reviews container">
+    <div class="section-head"><h2 class="split">Collectors say</h2></div>
+    <div class="review-slider" id="reviewSlider">
+      <blockquote class="active">“The chronograph arrived with its service papers and a handwritten history. It runs better than my modern watch.”<cite>— James W., Edinburgh</cite></blockquote>
+      <blockquote>“They swapped the lenses in my 1950s frames for my prescription without touching the patina. Remarkable care.”<cite>— Noor A., Abu Dhabi</cite></blockquote>
+      <blockquote>“Honest condition notes, beautiful photos, no surprises. My third piece from them.”<cite>— Marco T., Milan</cite></blockquote>
+    </div>
+    <div class="dots" id="reviewDots"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div><a class="logo" href="#">MERIDIAN</a><p data-t="tagline"></p></div>
+    <div><h4>Shop</h4><a href="#shop">Just arrived</a><a href="#shop">Watches</a><a href="#shop">Eyewear</a></div>
+    <div><h4>Help</h4><a href="#">Authentication</a><a href="#">Servicing</a><a href="#">Sell or trade-in</a></div>
+    <div><h4>Newsletter</h4><form class="notify small" id="newsForm"><input type="email" required placeholder="Your email" /><button class="btn btn-primary">Join</button></form></div>
+  </div>
+  <div class="footer-big">MERIDIAN</div>
+</footer>
+
+<!-- Overlays -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="cartDrawer" aria-label="Cart">
+  <header><h3>Your bag</h3><button class="icon-btn close" data-close>✕</button></header>
+  <div class="ship-bar"><p id="shipMsg"></p><div class="track"><span id="shipFill"></span></div></div>
+  <div class="drawer-items" id="cartItems"></div>
+  <footer class="drawer-foot">
+    <form class="promo" id="promoForm"><input id="promoInput" placeholder="Promo code (try HERITAGE5)" /><button class="btn btn-ghost">Apply</button></form>
+    <div class="row"><span>Subtotal</span><span id="subtotal">$0</span></div>
+    <div class="row discount" id="discountRow" hidden><span>Discount</span><span id="discount">-$0</span></div>
+    <div class="row total"><span>Total</span><span id="total">$0</span></div>
+    <button class="btn btn-primary full" id="checkoutBtn">Checkout</button>
+  </footer>
+</aside>
+
+<aside class="drawer" id="wishDrawer" aria-label="Wishlist">
+  <header><h3>Wishlist</h3><button class="icon-btn close" data-close>✕</button></header>
+  <div class="drawer-items" id="wishItems"></div>
+</aside>
+
+<div class="modal" id="quickView" role="dialog" aria-modal="true"><div class="modal-card" id="qvCard"></div></div>
+
+<div class="search" id="searchPanel">
+  <div class="search-inner container">
+    <input id="searchInput" placeholder="Search pieces…" autocomplete="off" />
+    <button class="icon-btn close" data-close>✕</button>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav class="bottom-bar" aria-label="Quick navigation">
+  <button data-go="shop"><svg viewBox="0 0 24 24"><path d="M4 9h16v11H4zM8 9V6a4 4 0 0 1 8 0v3"/></svg>Shop</button>
+  <button data-go="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Search</button>
+  <button data-go="wish"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>Saved<b class="badge" data-badge="wish">0</b></button>
+  <button data-go="cart"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 13h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Bag<b class="badge" data-badge="cart">0</b></button>
+</nav>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
