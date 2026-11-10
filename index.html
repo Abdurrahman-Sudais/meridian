@@ -10,6 +10,25 @@
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<!-- Mobile splash (shown once per visit on phones) -->
+<div class="splash" id="splash" aria-label="Welcome">
+  <div class="splash-glow"></div>
+  <svg class="dial" viewBox="0 0 200 200" aria-hidden="true">
+    <circle class="dial-ring" cx="100" cy="100" r="92"/>
+    <circle class="dial-face" cx="100" cy="100" r="84"/>
+    <g class="dial-ticks" id="dialTicks"></g>
+    <text class="dial-brand" x="100" y="70">MERIDIAN</text>
+    <text class="dial-sub" x="100" y="142">GENÈVE · 1962</text>
+    <line class="hand hand-h" id="handH" x1="100" y1="100" x2="100" y2="58"/>
+    <line class="hand hand-m" id="handM" x1="100" y1="100" x2="100" y2="34"/>
+    <line class="hand hand-s" id="handS" x1="100" y1="115" x2="100" y2="26"/>
+    <circle class="dial-pin" cx="100" cy="100" r="4"/>
+  </svg>
+  <h1 class="splash-word" id="splashWord">MERIDIAN</h1>
+  <p class="splash-tag">Vintage watches · Eyewear · Accessories</p>
+  <button class="splash-enter" id="splashEnter"><span class="chev"></span><span class="chev"></span>Swipe up to enter</button>
+</div>
+
 <!-- Preloader -->
 <div class="loader" id="loader"><div class="loader-word">MERIDIAN</div><div class="loader-bar"><span id="loaderBar"></span></div></div>
 <div class="cursor" id="cursor"></div><div class="cursor-dot" id="cursorDot"></div>

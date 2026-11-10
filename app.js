@@ -38,8 +38,43 @@ const byId = id => PRODUCTS.find(p => p.id === id);
   let p = 0; const bar = $('#loaderBar');
   const t = setInterval(() => {
     p = Math.min(100, p + Math.random()*18); bar.style.width = p + '%';
-    if (p >= 100) { clearInterval(t); setTimeout(() => { $('#loader').classList.add('done'); document.body.classList.add('ready'); $$('.hero .split, .hero .reveal').forEach(el=>el.classList.add('in')); }, 250); }
+    if (p >= 100) { clearInterval(t); setTimeout(() => { $('#loader').classList.add('done'); if (!splashOn) heroIn(); }, 250); }
   }, 90);
+})();
+function heroIn() { document.body.classList.add('ready'); $$('.hero .split, .hero .reveal').forEach(el=>el.classList.add('in')); }
+
+/* ===== Mobile splash ===== */
+var splashOn = false;
+(() => {
+  const sp = $('#splash');
+  if (!matchMedia('(max-width:760px)').matches || sessionStorage.getItem('mer_splash')) { sp.remove(); return; }
+  splashOn = true; document.body.classList.add('lock');
+  $('#dialTicks').innerHTML = Array.from({length:60}, (_, i) => {
+    const big = i % 5 === 0, a = i * 6 * Math.PI / 180, r1 = big ? 70 : 76, r2 = 80;
+    return `<line class="${big?'big':''}" style="--d:${i*18}ms" x1="${100+r1*Math.sin(a)}" y1="${100-r1*Math.cos(a)}" x2="${100+r2*Math.sin(a)}" y2="${100-r2*Math.cos(a)}"/>`;
+  }).join('');
+  $('#splashWord').innerHTML = [...'MERIDIAN'].map((c, i) => `<span style="--i:${i}">${c}</span>`).join('');
+  requestAnimationFrame(() => sp.classList.add('on'));
+  // Sweep the hands to the classic 10:10, then let the seconds hand tick
+  const now = new Date(); let sec = now.getSeconds();
+  setTimeout(() => { $('#handH').style.transform = 'rotate(-60deg)'; $('#handM').style.transform = 'rotate(60deg)'; }, 500);
+  const tick = setInterval(() => { sec++; $('#handS').style.transform = `rotate(${sec*6}deg)`; }, 1000);
+  $('#handS').style.transform = `rotate(${sec*6}deg)`;
+
+  const enter = () => {
+    if (!splashOn) return; splashOn = false;
+    sessionStorage.setItem('mer_splash', '1'); clearInterval(tick);
+    navigator.vibrate?.(12);
+    sp.classList.add('leave'); document.body.classList.remove('lock');
+    setTimeout(heroIn, 350); setTimeout(() => sp.remove(), 1300);
+  };
+  $('#splashEnter').addEventListener('click', enter);
+  let y0 = null;
+  sp.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, {passive:true});
+  sp.addEventListener('touchmove', e => { if (y0 === null) return; const d = Math.min(0, e.touches[0].clientY - y0);
+    sp.style.transform = `translateY(${d*.6}px)`; sp.style.transition = 'none'; }, {passive:true});
+  sp.addEventListener('touchend', e => { const d = e.changedTouches[0].clientY - y0; y0 = null; sp.style.transition = ''; sp.style.transform = '';
+    if (d < -60) enter(); }, {passive:true});
 })();
 
 /* ===== Split text into words ===== */
