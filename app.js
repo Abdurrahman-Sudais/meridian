@@ -38,7 +38,7 @@ const byId = id => PRODUCTS.find(p => p.id === id);
   let p = 0; const bar = $('#loaderBar');
   const t = setInterval(() => {
     p = Math.min(100, p + Math.random()*18); bar.style.width = p + '%';
-    if (p >= 100) { clearInterval(t); setTimeout(() => { $('#loader').classList.add('done'); if (!splashOn) heroIn(); }, 250); }
+    if (p >= 100) { clearInterval(t); setTimeout(() => { $('#loader')?.classList.add('done'); if (!splashOn) heroIn(); }, 250); }
   }, 90);
 })();
 function heroIn() { document.body.classList.add('ready'); $$('.hero .split, .hero .reveal').forEach(el=>el.classList.add('in')); }
@@ -47,8 +47,10 @@ function heroIn() { document.body.classList.add('ready'); $$('.hero .split, .her
 var splashOn = false;
 (() => {
   const sp = $('#splash');
-  if (!matchMedia('(max-width:760px)').matches || sessionStorage.getItem('mer_splash')) { sp.remove(); return; }
+  if (sessionStorage.getItem('mer_splash')) { sp.remove(); return; }
   splashOn = true; document.body.classList.add('lock');
+  $('#loader').remove();                                   // the clock replaces the plain loader
+  const touch = matchMedia('(hover:none)').matches;
   $('#dialTicks').innerHTML = Array.from({length:60}, (_, i) => {
     const big = i % 5 === 0, a = i * 6 * Math.PI / 180, r1 = big ? 70 : 76, r2 = 80;
     return `<line class="${big?'big':''}" style="--d:${i*18}ms" x1="${100+r1*Math.sin(a)}" y1="${100-r1*Math.cos(a)}" x2="${100+r2*Math.sin(a)}" y2="${100-r2*Math.cos(a)}"/>`;
@@ -68,7 +70,12 @@ var splashOn = false;
     sp.classList.add('leave'); document.body.classList.remove('lock');
     setTimeout(heroIn, 350); setTimeout(() => sp.remove(), 1300);
   };
-  $('#splashEnter').addEventListener('click', enter);
+  setTimeout(enter, 3600);                                 // dismiss on its own once the clock settles
+  {                                                        // tap, click, scroll or key skips ahead
+    sp.addEventListener('click', enter);
+    sp.addEventListener('wheel', e => { if (e.deltaY > 10) enter(); }, {passive:true});
+    addEventListener('keydown', e => { if (splashOn && ['Enter',' ','ArrowDown','PageDown','Escape'].includes(e.key)) { e.preventDefault(); enter(); } }, {once:false});
+  }
   let y0 = null;
   sp.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, {passive:true});
   sp.addEventListener('touchmove', e => { if (y0 === null) return; const d = Math.min(0, e.touches[0].clientY - y0);
@@ -106,7 +113,9 @@ function countUp(el) {
 const cur = $('#cursor'), dot = $('#cursorDot'); let mx=0,my=0,cx=0,cy=0;
 addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`; });
 (function loop(){ cx+=(mx-cx)*.15; cy+=(my-cy)*.15; cur.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
-document.addEventListener('mouseover', e => cur.classList.toggle('hover', !!e.target.closest('a,button,.card-media,.cat-card,select,input')));
+document.addEventListener('mouseover', e => {
+  cur.classList.toggle('hover', !!e.target.closest('a,button,.card-media,.cat-card,select,input,.qv-gallery'));
+});
 
 /* ===== Magnetic buttons & tilt ===== */
 $$('.magnetic').forEach(b => {
@@ -129,6 +138,7 @@ function onScroll() {
   $('#scrollProgress').style.transform = `scaleX(${y/h})`;
   nav.classList.toggle('scrolled', y > 40);
   nav.classList.toggle('hide', y > lastY && y > 400 && !document.body.classList.contains('lock'));
+  document.body.classList.toggle('nav-hidden', nav.classList.contains('hide'));
   mqV += (y - lastY) * .08; lastY = y;
   if (y < innerHeight) heroBg.style.translate = `0 ${y*.25}px`;
   $$('.parallax').forEach(el => { const r = el.parentElement.getBoundingClientRect(); el.style.transform = `translateY(${r.top * -(+el.dataset.speed)}px)`; });
