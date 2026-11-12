@@ -1,0 +1,6 @@
+supabase
+scripts
+.env
+.env.*
+!.env.example
+.claude

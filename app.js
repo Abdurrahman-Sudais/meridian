@@ -162,10 +162,10 @@ function renderGrid() {
   $('#grid').innerHTML = list.map((p,i) => `
     <article class="card" style="--i:${i}" data-id="${p.id}">
       <div class="card-media" data-qv>
-        ${p.was ? `<span class="tag sale">−${Math.round((1-p.price/p.was)*100)}%</span>` : p.isNew ? '<span class="tag">New</span>' : ''}
+        ${p.sold ? '<span class="tag sold">Sold</span>' : p.was ? `<span class="tag sale">−${Math.round((1-p.price/p.was)*100)}%</span>` : p.isNew ? '<span class="tag">New</span>' : ''}
         <button class="wish ${wish.includes(p.id)?'on':''}" data-wish aria-label="Wishlist">${heart}</button>
         <img src="${p.imgs[0]}" alt="${p.name}" loading="lazy"><img class="alt" src="${p.imgs[1]}" alt="" loading="lazy">
-        <div class="quick-add">${p.options ? `<button data-qvbtn>Choose options</button>` : `<button data-add="One of one">+ Add to bag</button>`}</div>
+        ${p.sold ? '' : `<div class="quick-add">${p.options ? `<button data-qvbtn>Choose options</button>` : `<button data-add="One of one">+ Add to bag</button>`}</div>`}
       </div>
       <div class="card-info">
         <div><h3>${p.name}</h3><small>${p.year} · ${p.condition}</small><div class="swatches">${p.colors.map(c=>`<i style="background:${c}"></i>`).join('')}</div></div>
@@ -214,6 +214,7 @@ $('#themeBtn').addEventListener('click', () => { root.dataset.theme = root.datas
 /* ===== Cart ===== */
 function addToCart(id, size, color, imgEl) {
   const key = `${id}-${size}-${color}`, line = cart.find(l => l.key === key);
+  if (byId(id).sold) { toast('Sorry — this piece has been sold'); return; }
   const p0 = byId(id), inCart = cart.filter(l=>l.id===id).reduce((s,l)=>s+l.qty,0);
   if (p0.stock && inCart >= p0.stock) { toast(p0.stock===1 ? 'This is a single piece — already in your bag' : 'No more available'); return; }
   line ? line.qty++ : cart.push({ key, id, size, color, qty:1 });
@@ -254,7 +255,6 @@ $('#cartItems').addEventListener('click', e => {
 $('#promoForm').addEventListener('submit', e => { e.preventDefault(); const c = $('#promoInput').value.trim().toUpperCase();
   if (PROMOS[c]) { promo = c; store.set('obs_promo', c); toast(`Code ${c} applied`); } else toast('Invalid code');
   renderCart(); });
-$('#checkoutBtn').addEventListener('click', () => toast(cart.length ? 'Connect your checkout (Stripe / Shopify) here' : 'Your bag is empty'));
 $('#cartBtn').addEventListener('click', () => openPanel($('#cartDrawer')));
 
 /* ===== Wishlist ===== */
@@ -304,8 +304,8 @@ function openQuickView(id) {
       ${fit ? `<div class="fit-finder" id="fitFinder">
         <div class="row"><input id="fH" type="number" placeholder="Height (cm)"><input id="fW" type="number" placeholder="Weight (kg)"></div>
         <button class="btn btn-ghost" id="fitGo" style="padding:10px">Recommend size</button><span id="fitOut"></span></div>` : ''}
-      <span class="stock">● ${p.stock===1 ? 'Single piece — once sold, it’s gone' : `Only ${p.stock} available`}</span>
-      <button class="btn btn-primary full" id="qvAdd"><span>${OPTS ? 'Choose an option' : `Add to bag — ${money(p.price)}`}</span></button>
+      <span class="stock">● ${p.sold ? 'Sold — join the waitlist for similar pieces' : p.stock===1 ? 'Single piece — once sold, it’s gone' : `Only ${p.stock} available`}</span>
+      <button class="btn btn-primary full" id="qvAdd" ${p.sold?'disabled':''}><span>${p.sold ? 'Sold' : OPTS ? 'Choose an option' : `Add to bag — ${money(p.price)}`}</span></button>
     </div>`;
   const card = $('#qvCard');
   $$('.qv-thumbs img', card).forEach(t => t.onclick = () => { $$('.qv-thumbs img',card).forEach(x=>x.classList.remove('on')); t.classList.add('on'); $('#qvMain').src = t.src; });

@@ -163,6 +163,35 @@
     <div class="row total"><span>Total</span><span id="total">$0</span></div>
     <button class="btn btn-primary full" id="checkoutBtn">Checkout</button>
   </footer>
+
+  <!-- Checkout step (slides over the bag) -->
+  <form class="checkout" id="checkoutForm" novalidate>
+    <header><button type="button" class="icon-btn" id="checkoutBack" aria-label="Back to bag">←</button><h3>Delivery</h3><span></span></header>
+    <div class="checkout-body">
+      <label>Full name<input name="name" autocomplete="name" required /></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+      <label>Phone<input name="phone" type="tel" autocomplete="tel" /></label>
+      <label>Address<input name="address" autocomplete="street-address" required /></label>
+      <div class="two"><label>City<input name="city" autocomplete="address-level2" required /></label>
+        <label>Country<input name="country" autocomplete="country-name" value="Nigeria" /></label></div>
+      <p class="checkout-note">🔒 Payments are processed securely by Paystack. Every piece ships fully insured.</p>
+      <p class="checkout-error" id="checkoutError" role="alert" hidden></p>
+    </div>
+    <footer class="drawer-foot">
+      <div class="row total"><span>To pay</span><span id="payTotal">—</span></div>
+      <button class="btn btn-primary full" id="payBtn" type="submit"><span>Pay securely</span></button>
+    </footer>
+  </form>
+
+  <!-- Confirmation -->
+  <div class="checkout done" id="checkoutDone">
+    <div class="done-inner">
+      <svg viewBox="0 0 52 52" class="tick"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+      <h3>Thank you</h3>
+      <p id="doneMsg">Your order is confirmed.</p>
+      <button class="btn btn-ghost" data-close>Continue browsing</button>
+    </div>
+  </div>
 </aside>
 
 <aside class="drawer" id="wishDrawer" aria-label="Wishlist">
@@ -192,5 +221,6 @@
 <script src="config.js"></script>
 <script src="app.js"></script>
 <script src="mobile.js"></script>
+<script src="checkout.js"></script>
 </body>
 </html>
