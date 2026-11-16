@@ -81,8 +81,16 @@ npm test
 - **Orders:** Supabase → Table Editor → orders, filtered by `status = paid`. Set `shipped` when dispatched.
 - **Promo codes:** use the `promo_codes` table. Set `active = false` to retire a code.
 
+## Admin dashboard
+Open `/admin.html` and sign in with `ADMIN_PASSWORD` (set it in `.env` or in Vercel's environment variables). From there you can:
+- see revenue and orders waiting to ship
+- mark orders shipped or refunded, and approve flagged orders
+- change stock, prices and whether a piece is live
+- add or switch off promo codes
+
+Do actual refunds in the Paystack dashboard. The admin page only records them.
+
 ## Not built yet
-- An admin dashboard. Use the Supabase table editor for now.
 - Shipping-status emails and customer accounts.
 - Exchange rates are set by hand in `USD_TO_CURRENCY`. You could switch to pricing directly in naira.
 - Old unpaid `pending` orders aren't cleaned up automatically. They're harmless.

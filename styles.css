@@ -575,3 +575,16 @@ html,body{overflow-x:clip}
 .checkout-body{overflow-x:hidden}
 .checkout-body label,.checkout-body .two>label{min-width:0}
 .checkout-body input{width:100%;min-width:0}
+
+/* Interactive glow (glow.js) */
+.glow-ambient{position:fixed;left:0;top:0;width:640px;height:640px;margin:-320px 0 0 -320px;border-radius:50%;pointer-events:none;z-index:-1;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 16%,transparent),transparent 65%);filter:blur(20px);opacity:.9;transition:opacity .6s}
+[data-theme=light] .glow-ambient{opacity:.55}
+.glow-on .card-media,.glow-on .cat-card{isolation:isolate}
+.glow-on .card-media::after,.glow-on .cat-card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;opacity:0;transition:opacity .4s;
+  background:radial-gradient(260px circle at var(--gx,50%) var(--gy,50%),rgba(255,236,200,.22),transparent 60%);mix-blend-mode:soft-light}
+.glow-on .card-media::before,.glow-on .cat-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:4;opacity:0;transition:opacity .4s;
+  background:radial-gradient(200px circle at var(--gx,50%) var(--gy,50%),var(--accent),transparent 70%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.glow-on .card-media:hover::after,.glow-on .cat-card:hover::after,.glow-on .card-media:hover::before,.glow-on .cat-card:hover::before{opacity:1}
+.glow-on .btn{box-shadow:0 0 0 transparent;transition:transform .4s var(--ease),color .4s,box-shadow .5s var(--ease)}
+.glow-on .btn:hover{box-shadow:0 0 34px -6px color-mix(in srgb,var(--accent) 70%,transparent)}
