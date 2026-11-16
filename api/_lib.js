@@ -42,7 +42,7 @@ export const route = (methods, fn) => async (req, res) => {
   catch (e) {
     const status = e.status || 500;
     if (status >= 500) console.error(status === 503 ? `[config] ${e.message}` : e);
-    send(res, status, { error: status === 503 ? 'Online checkout is temporarily unavailable — please try again shortly.'
+    send(res, status, { error: status === 503 ? e.publicMessage || 'Online checkout is temporarily unavailable — please try again shortly.'
                               : status >= 500 ? 'Something went wrong — please try again.' : e.message });
   }
 };

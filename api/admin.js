@@ -67,7 +67,11 @@ const actions = {
 };
 
 export default route(['POST'], async (req, res) => {
-  if (!env('ADMIN_PASSWORD') || !env('SUPABASE_URL')) throw new HttpError(503, 'Admin is not configured (set ADMIN_PASSWORD).');
+  if (!env('ADMIN_PASSWORD') || !env('SUPABASE_URL')) {
+    const e = new HttpError(503, 'Admin is not configured (set ADMIN_PASSWORD).');
+    e.publicMessage = 'Admin isn't set up yet: add ADMIN_PASSWORD in your hosting environment variables, then redeploy.';
+    throw e;
+  }
   const body = await readJson(req);
 
   if (body.action === 'login') {
