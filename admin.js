@@ -6,6 +6,7 @@ let token = sessionStorage.getItem(KEY);
 
 const money = (minor, cur = 'NGN') => new Intl.NumberFormat('en', { style: 'currency', currency: cur, maximumFractionDigits: 0 }).format(minor / 100);
 const when = d => new Date(d).toLocaleString('en', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const img = id => !id ? '' : /^https?:/.test(id) ? id : `https://images.unsplash.com/${id}?w=200&q=70`;
 const LABEL = { pending: 'Pending', paid: 'Paid', paid_needs_review: 'Review', failed: 'Failed', cancelled: 'Cancelled', shipped: 'Shipped', refunded: 'Refunded' };
 
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2200); }
@@ -121,7 +122,7 @@ async function loadProducts() {
   const list = await api('products');
   $('#products').innerHTML = list.map(p => `
     <div class="prod ${p.active ? '' : 'off'}" data-id="${p.id}">
-      <img src="${esc(p.data?.imgs?.[0] || '')}" alt="" loading="lazy" />
+      <img src="${esc(img(p.data?.imgs?.[0]))}" alt="" loading="lazy" />
       <div><b>${esc(p.name)}</b><small>${esc(p.cat)}${p.stock === 0 ? ' · <span class="sold">Sold out</span>' : ''}</small></div>
       <div class="ctl">
         <label>Stock<input type="number" min="0" name="stock" value="${p.stock}" /></label>
